@@ -25,9 +25,11 @@ works as an alias for the arrow keys.
   - **Orange hunter triangles** (150 pts) are slow but *home in on you*. Each one
     picks a side and slides toward that flank of the cube, tracking your
     vertical position. They're easy to outrun — keep moving.
-- **Grey circle asteroids** drift across the field too. They are indestructible
-  obstacles: they **soak up your bullets** and cost you a life on contact, so
-  weave around them or wait for a gap. They bounce off the top and bottom edges.
+- **Grey circle asteroids** drift across the field too. They are **tough but
+  destructible**: bigger rocks take more hits (peppering them flashes white), and
+  they **soak up your bullets** as they go. Destroy one for points, or weave
+  around it — contact still costs you a life. They bounce off the top and bottom
+  edges.
 - **Every 5000 points a boss arrives** — a huge spinning purple triangle with a
   health bar. Ordinary enemies and asteroids stop spawning while it's on screen.
   It **fires aimed bursts** of pink projectiles at you (dodge them or take a hit).
@@ -54,9 +56,15 @@ pnpm dev         # start the Vite dev server
 pnpm test        # run the unit tests (Vitest)
 pnpm test:watch  # tests in watch mode
 pnpm typecheck   # tsc --noEmit
-pnpm build       # typecheck + production bundle into dist/
+pnpm build       # typecheck + self-contained bundle into dist/
 pnpm preview     # serve the production build
 ```
+
+`pnpm build` emits a **single self-contained `dist/index.html`** (CSS and JS
+inlined, no external asset requests), so you can open that one file directly —
+double-click it, email it, or open it over `file://` — with no server. The
+inlining step lives in `scripts/inline-dist.mjs`; it places the script at the
+end of `<body>` so the canvas exists before the engine starts.
 
 ## Project layout
 
@@ -80,6 +88,8 @@ src/
     fx/Starfield.ts       parallax scrolling backdrop
     scenes/GameScene.ts   input, spawning, collisions, scoring
     ui/Hud.ts             DOM overlay (score / lives / game over)
+scripts/
+  inline-dist.mjs         inlines the build output into one dist/index.html
 tests/                    Vitest suites for the pure logic
 ```
 
